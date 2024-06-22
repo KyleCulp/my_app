@@ -1,22 +1,22 @@
-# Ash Framework Demo Project
+# MyApp: Ash 3.0 Framework Demo Project
 
 This project is a demonstration of the capabilities of the Ash Framework and its related libraries, showcasing how to build a feature-rich application using Ash 3.0. The project integrates various Ash extensions to provide a comprehensive overview of the framework's potential.
 
 ## Project Goals
 
-- To showcase the integration of Ash and its related libraries in a single project.
-- To demonstrate the use of AshPostgres as the data layer.
-- To implement authentication using AshAuthentication.
-- To provide a web interface using AshPhoenix and AshAuthenticationPhoenix.
-- To expose APIs using AshJsonAPI, including OpenAPI and Redoc documentation.
-- To integrate GraphQL using AshGraphql.
-- To utilize state machines with AshStateMachine.
-- To implement audit trails using AshPaperTrail.
-- To showcase an admin interface with AshAdmin.
-- To demonstrate the use of financial calculations with AshMoney.
-- To secure sensitive data using AshCloak.
-- To generate slugs using AshSlug.
-- To import and export data using AshCSV.
+- [x] To showcase the integration of Ash and its related libraries in a single project.
+- [ ] To demonstrate the use of AshPostgres as the data layer.
+- [ ] To implement authentication using AshAuthentication.
+- [ ] To provide a web interface using AshPhoenix and AshAuthenticationPhoenix.
+- [ ] To expose APIs using AshJsonAPI, including OpenAPI and Redoc documentation.
+- [ ] To integrate GraphQL using AshGraphql.
+- [ ] To utilize state machines with AshStateMachine.
+- [ ] To implement audit trails using AshPaperTrail.
+- [ ] To showcase an admin interface with AshAdmin.
+- [ ] To demonstrate the use of financial calculations with AshMoney.
+- [ ] To secure sensitive data using AshCloak.
+- [ ] To generate slugs using AshSlug.
+- [ ] To import and export data using AshCSV.
 
 ## Features
 
