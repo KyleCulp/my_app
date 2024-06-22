@@ -1,0 +1,39 @@
+FROM elixir:latest
+
+# Install inotify-tools and other dependencies
+RUN apt-get update && \
+    apt-get install -y inotify-tools postgresql-client
+
+# Set environment variables
+ENV MIX_ENV=dev
+
+# Create app directory
+WORKDIR /app
+
+# Install Hex and Rebar (Elixir build tools)
+RUN mix local.hex --force && \
+    mix local.rebar --force && \
+    mix archive.install hex credo --force && \
+    mix archive.install hex bunt --force && \
+    mix archive.install hex jason --force
+            
+# Copy mix.exs and mix.lock files
+COPY mix.exs mix.lock ./
+
+# Fetch dependencies
+# RUN mix deps.get
+
+# Copy the rest of the application code
+COPY . .
+
+# Install Node.js and npm (optional, if you are using assets with Phoenix)
+RUN apt-get install -y nodejs npm
+
+# Install Node.js dependencies (optional, if you are using assets with Phoenix)
+# RUN cd assets && npm install
+
+# Expose the port the Phoenix app runs on
+EXPOSE 4000 5000
+
+# Command to run the Phoenix server
+CMD ["mix", "phx.server"]

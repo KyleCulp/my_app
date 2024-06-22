@@ -1,0 +1,85 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+    ports:
+      - "4000:4000"
+    environment:
+      - MIX_ENV=dev
+    command: sleep infinity
+    networks:
+      - dev-network
+
+  postgres-primary:
+    image: bitnami/postgresql:latest
+    container_name: postgres-primary
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=masterpassword
+      - POSTGRESQL_USERNAME=myuser
+      - POSTGRESQL_PASSWORD=mypassword
+      - POSTGRESQL_DATABASE=mydatabase
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+    volumes:
+      - postgres-primary-data:/bitnami/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - dev-network
+
+  postgres-replica1:
+    image: bitnami/postgresql:latest
+    container_name: postgres-replica1
+    depends_on:
+      - postgres-primary
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=replicapassword
+      - POSTGRESQL_USERNAME=myuser
+      - POSTGRESQL_PASSWORD=mypassword
+      - POSTGRESQL_DATABASE=mydatabase
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_HOST=postgres-primary
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+    volumes:
+      - postgres-replica1-data:/bitnami/postgresql
+    ports:
+      - "5433:5432"
+    networks:
+      - dev-network
+
+  postgres-replica2:
+    image: bitnami/postgresql:latest
+    container_name: postgres-replica2
+    depends_on:
+      - postgres-primary
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=replicapassword
+      - POSTGRESQL_USERNAME=myuser
+      - POSTGRESQL_PASSWORD=mypassword
+      - POSTGRESQL_DATABASE=mydatabase
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_HOST=postgres-primary
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+    volumes:
+      - postgres-replica2-data:/bitnami/postgresql
+    ports:
+      - "5434:5432"
+    networks:
+      - dev-network
+
+volumes:
+  postgres-primary-data:
+  postgres-replica1-data:
+  postgres-replica2-data:
+
+networks:
+  dev-network:
+    driver: bridge

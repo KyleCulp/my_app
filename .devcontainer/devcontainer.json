@@ -1,0 +1,23 @@
+{
+  "name": "MyApp Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "jakebecker.elixir-ls",
+        "phoenixframework.phoenix",
+        "pantajoe.vscode-elixir-credo",
+        "samuel-pordeus.elixir-test"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "elixirLS.dialyzerEnabled": true,
+        "elixirLS.fetchDeps": true,
+        "elixir.credo.configFile": "../.credo.exs"
+      }
+    }
+  },
+}
