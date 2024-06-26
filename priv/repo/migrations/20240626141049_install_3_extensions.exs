@@ -1,4 +1,4 @@
-defmodule MyApp.Repo.Migrations.Install3Extensions20240621060139 do
+defmodule MyApp.Repo.Migrations.Install3Extensions20240626141047 do
   @moduledoc """
   Installs any extensions that are mentioned in the repo's `installed_extensions/0` callback
 

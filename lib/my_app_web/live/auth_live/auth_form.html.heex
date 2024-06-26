@@ -1,0 +1,18 @@
+<div>
+  <.form
+    for={@form}
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="submit"
+    class="space-y-2"
+  >
+    <.input type="email" field={@form[:email]} label="Email" />
+    <.input type="password" field={@form[:password]} label="Password" />
+    <%= if @live_action == :register do %>
+      <.input type="password" field={@form[:password_confirmation]} label="Confirm Password" />
+    <% end %>
+    <.button phx-disable-with={button_text(@live_action)} class="w-full mt-2 hover:primary-200">
+      <%= button_text(@live_action) %>
+    </.button>
+  </.form>
+</div>

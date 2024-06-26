@@ -1,10 +1,39 @@
-# MyApp: Ash 3.0 Framework Demo Project
+# MyApp: Ash 3.0 Demo Project
+
+I built this example app with the goal of learning Ash and seeing if it's something I would be interested in. Although well documented, I ran into many issues regardless and did not find many examples on github, while ChatGPT is poisoned with Ash 2.0 and earlier syntax and methodologies. By building a simple application utilizing many different domains to showcase the Ash ecosystem, I hope to improve the barrier to entry to Ash for others.
 
 This project is a demonstration of the capabilities of the Ash Framework and its related libraries, showcasing how to build a feature-rich application using Ash 3.0. The project integrates various Ash extensions to provide a comprehensive overview of the framework's potential.
 
-## Project Goals
+## Features
+- Ash Authentication
+- Ash JSON API
+- Ash Graphql
+- Phoenix & Liveview Variants
 
-- [x] To showcase the integration of Ash and its related libraries in a single project.
+#### Project Domains
+- Accounts
+  - User
+  - 
+  - 
+- Todos
+  - SimpleTodoList
+  - SimpleTodoItem
+  - 
+  - 
+  - 
+- Helpdesk
+  - Representative
+  - Ticket
+  - 
+  - 
+- Blog
+  - Posts
+  - Comments
+  - Tags
+  - 
+
+## Project Goals
+- [ ] To showcase the integration of Ash and its related libraries in a single project.
 - [ ] To demonstrate the use of AshPostgres as the data layer.
 - [ ] To implement authentication using AshAuthentication.
 - [ ] To provide a web interface using AshPhoenix and AshAuthenticationPhoenix.
@@ -18,7 +47,8 @@ This project is a demonstration of the capabilities of the Ash Framework and its
 - [ ] To generate slugs using AshSlug.
 - [ ] To import and export data using AshCSV.
 
-## Features
+## Ash Libraries Used
+- **Ash**
 
 - **Ash Framework**: A powerful, flexible framework for building complex applications with ease.
 - **AshPostgres**: PostgreSQL integration for Ash, providing a robust and scalable data layer.
@@ -37,11 +67,6 @@ This project is a demonstration of the capabilities of the Ash Framework and its
 
 ## Getting Started
 
-### Prerequisites
-
-- Elixir 1.13 or higher
-- PostgreSQL
-
 ### Installation
 
 1. Clone the repository:
@@ -49,7 +74,7 @@ This project is a demonstration of the capabilities of the Ash Framework and its
    ```bash
    git clone https://github.com/your-username/ash-demo-project.git
    cd ash-demo-project
-
+  ```
 
 # MyApp
 

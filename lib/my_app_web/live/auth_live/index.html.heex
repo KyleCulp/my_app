@@ -1,0 +1,71 @@
+<section class="bg-white sm:bg-gray-50 dark:bg-gray-900  h-screen flex justify-center items-center">
+  <div class="w-full md:h-auto items-center justify-center mx-auto bg-white rounded-lg sm:shadow dark:bg-gray-800 sm:max-w-lg xl:p-0">
+    <div class="p-4 space-y-2 lg:space-y-4 sm:p-6">
+      <a
+        href="/"
+        class="inline-flex items-center mb-2 text-xl font-semibold text-gray-900 dark:text-white sm:static sm:mb-2 sm:inline-flex sm:items-center sm:text-xl sm:font-semibold sm:text-gray-900 sm:dark:text-white absolute top-0 left-0 mt-2 ml-2"
+      >
+        <img class="w-8 h-8 mr-2 filter-black" src="/images/logo.svg" alt="logo" /> MyAppWeb
+      </a>
+
+      <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 sm:text-2xl dark:text-white">
+        <%= header_text(@live_action) %>
+      </h1>
+      <.live_component
+        module={MyAppWeb.AuthLive.AuthForm}
+        id="auth-form"
+        form={@form}
+        live_action={@live_action}
+      />
+
+      <div class="flex items-center">
+        <div class="w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
+        <div class="px-5 w-auto text-center text-gray-500 dark:text-gray-400 whitespace-nowrap">
+          or <%= if @live_action == :register, do: "register", else: "log in" %> with
+        </div>
+        <div class="w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
+      </div>
+
+      <div class="container mx-auto p-2 grid grid-cols-2 gap-2">
+        <a class="oauth-item" href="#">
+          <i class="bi bi-google mr-2"></i> Google
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-apple mr-2"></i> Apple
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-github mr-2"></i> Github
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-microsoft mr-2"></i> Microsoft
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-discord mr-2"></i> Discord
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-steam mr-2"></i> Steam
+        </a>
+      </div>
+      <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+        <%= if @live_action==:register do %>
+          Already have an account?
+          <a
+            href="/login"
+            class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+          >
+            Sign in here
+          </a>
+        <% else %>
+          Don't have an account yet?
+          <a
+            href="/register"
+            class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+          >
+            Register
+            here
+          </a>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</section>

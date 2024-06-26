@@ -1,6 +1,12 @@
 [
   plugins: [Phoenix.LiveView.HTMLFormatter],
-  inputs: ["mix.exs", ".formatter.exs", "*.{heex,ex,exs}", "{config,lib,test}/**/*.{heex,ex,exs}"],
+  inputs: [
+    "mix.exs",
+    ".formatter.exs",
+    "*.{heex,ex,exs}",
+    "{config,lib,test}/**/*.{heex,ex,exs}",
+    "priv/*/seeds.exs"
+  ],
   subdirectories: ["apps/*"],
   import_deps: [
     :phoenix,

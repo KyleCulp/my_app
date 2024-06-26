@@ -4,6 +4,8 @@ defmodule MyApp.Accounts do
   resources do
     resource MyApp.Accounts.User
     resource MyApp.Accounts.Token
+    # resource MyApp.Accounts.Profile
+    # resource MyApp.Accounts.UserIdentity
   end
 
   json_api do

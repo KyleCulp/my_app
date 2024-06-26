@@ -16,8 +16,19 @@
         "editor.formatOnSave": true,
         "elixirLS.dialyzerEnabled": true,
         "elixirLS.fetchDeps": true,
-        "elixir.credo.configFile": "../.credo.exs"
-      }
+        "elixir.credo.configFile": "../.credo.exs",
+        "files.associations": {
+          "*.heex": "phoenix-heex",
+        },
+        "[elixir]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "JakeBecker.elixir-ls"
+        },
+        "[phoenix-heex]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "JakeBecker.elixir-ls"
+        },
+      },
     }
   },
 }

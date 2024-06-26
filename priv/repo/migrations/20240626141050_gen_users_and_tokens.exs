@@ -1,4 +1,4 @@
-defmodule MyApp.Repo.Migrations.AddUserAndToken do
+defmodule MyApp.Repo.Migrations.GenUsersAndTokens do
   @moduledoc """
   Updates resources based on their most recent snapshots.
 
@@ -12,6 +12,16 @@ defmodule MyApp.Repo.Migrations.AddUserAndToken do
       add(:id, :uuid, null: false, default: fragment("gen_random_uuid()"), primary_key: true)
       add(:email, :citext, null: false)
       add(:hashed_password, :text, null: false)
+
+      add(:created_at, :utc_datetime_usec,
+        null: false,
+        default: fragment("(now() AT TIME ZONE 'utc')")
+      )
+
+      add(:updated_at, :utc_datetime_usec,
+        null: false,
+        default: fragment("(now() AT TIME ZONE 'utc')")
+      )
     end
 
     create unique_index(:users, [:email], name: "users_unique_email_index")

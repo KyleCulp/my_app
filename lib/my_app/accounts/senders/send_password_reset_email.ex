@@ -1,4 +1,4 @@
-defmodule MyApp.Accounts.User.Senders.SendPasswordResetEmail do
+defmodule MyApp.Accounts.Senders.SendPasswordResetEmail do
   @moduledoc """
   Sends a password reset email
   """

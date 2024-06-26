@@ -35,3 +35,8 @@ my_app-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# OAuth Secrets are in here. Refer to example.env for layout/required envs
+.env 
+
+# Until I can remove sensitive data from oauth, keep tutorials off git
+tutorial/    
