@@ -20,6 +20,36 @@ if System.get_env("PHX_SERVER") do
   config :my_app, MyAppWeb.Endpoint, server: true
 end
 
+config :my_app, :github,
+  client_id: System.fetch_env!("GITHUB_CLIENT_ID"),
+  redirect_uri: System.fetch_env!("GITHUB_REDIRECT_URI"),
+  client_secret: System.fetch_env!("GITHUB_CLIENT_SECRET")
+
+config :my_app, :google,
+  client_id: System.fetch_env!("GOOGLE_CLIENT_ID"),
+  redirect_uri: System.fetch_env!("GOOGLE_REDIRECT_URI"),
+  client_secret: System.fetch_env!("GOOGLE_CLIENT_SECRET")
+
+# config :my_app, :apple,
+#   client_id: System.fetch_env!("APPLE_CLIENT_ID"),
+#   redirect_uri: System.fetch_env!("APPLE_REDIRECT_URI"),
+#   client_secret: System.fetch_env!("APPLE_CLIENT_SECRET")
+
+# config :my_app, :microsoft,
+#   client_id: System.fetch_env!("MICROSOFT_CLIENT_ID"),
+#   redirect_uri: System.fetch_env!("MICROSOFT_REDIRECT_URI"),
+#   client_secret: System.fetch_env!("MICROSOFT_CLIENT_SECRET")
+
+# config :my_app, :discord,
+#   client_id: System.fetch_env!("DISCORD_CLIENT_ID"),
+#   redirect_uri: System.fetch_env!("DISCORD_REDIRECT_URI"),
+#   client_secret: System.fetch_env!("DISCORD_CLIENT_SECRET")
+
+# config :my_app, :steam,
+#   client_id: System.fetch_env!("STEAM_CLIENT_ID"),
+#   redirect_uri: System.fetch_env!("STEAM_REDIRECT_URI"),
+#   client_secret: System.fetch_env!("STEAM_CLIENT_SECRET")
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -27,36 +57,6 @@ if config_env() == :prod do
       environment variable DATABASE_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
       """
-
-  config :my_app, :github,
-    client_id: System.fetch_env!("GITHUB_CLIENT_ID"),
-    redirect_uri: System.fetch_env!("GITHUB_REDIRECT_URI"),
-    client_secret: System.fetch_env!("GITHUB_CLIENT_SECRET")
-
-  config :my_app, :google,
-    client_id: System.fetch_env!("GOOGLE_CLIENT_ID"),
-    redirect_uri: System.fetch_env!("GOOGLE_REDIRECT_URI"),
-    client_secret: System.fetch_env!("GOOGLE_CLIENT_SECRET")
-
-  # config :my_app, :apple,
-  #   client_id: System.fetch_env!("APPLE_CLIENT_ID"),
-  #   redirect_uri: System.fetch_env!("APPLE_REDIRECT_URI"),
-  #   client_secret: System.fetch_env!("APPLE_CLIENT_SECRET")
-
-  # config :my_app, :microsoft,
-  #   client_id: System.fetch_env!("MICROSOFT_CLIENT_ID"),
-  #   redirect_uri: System.fetch_env!("MICROSOFT_REDIRECT_URI"),
-  #   client_secret: System.fetch_env!("MICROSOFT_CLIENT_SECRET")
-
-  # config :my_app, :discord,
-  #   client_id: System.fetch_env!("DISCORD_CLIENT_ID"),
-  #   redirect_uri: System.fetch_env!("DISCORD_REDIRECT_URI"),
-  #   client_secret: System.fetch_env!("DISCORD_CLIENT_SECRET")
-
-  # config :my_app, :steam,
-  #   client_id: System.fetch_env!("STEAM_CLIENT_ID"),
-  #   redirect_uri: System.fetch_env!("STEAM_REDIRECT_URI"),
-  #   client_secret: System.fetch_env!("STEAM_CLIENT_SECRET")
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 

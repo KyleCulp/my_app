@@ -1,4 +1,4 @@
-defmodule MyApp.Repo.Migrations.GenUsersAndTokens do
+defmodule MyApp.Repo.Migrations.GenUserAndToken do
   @moduledoc """
   Updates resources based on their most recent snapshots.
 
@@ -11,7 +11,7 @@ defmodule MyApp.Repo.Migrations.GenUsersAndTokens do
     create table(:users, primary_key: false) do
       add(:id, :uuid, null: false, default: fragment("gen_random_uuid()"), primary_key: true)
       add(:email, :citext, null: false)
-      add(:hashed_password, :text, null: false)
+      add(:hashed_password, :text)
 
       add(:created_at, :utc_datetime_usec,
         null: false,
@@ -24,7 +24,7 @@ defmodule MyApp.Repo.Migrations.GenUsersAndTokens do
       )
     end
 
-    create unique_index(:users, [:email], name: "users_unique_email_index")
+    create unique_index(:users, [:email], name: "users_email_index")
 
     create table(:tokens, primary_key: false) do
       add(:updated_at, :utc_datetime_usec,
@@ -48,7 +48,7 @@ defmodule MyApp.Repo.Migrations.GenUsersAndTokens do
   def down do
     drop(table(:tokens))
 
-    drop_if_exists(unique_index(:users, [:email], name: "users_unique_email_index"))
+    drop_if_exists(unique_index(:users, [:email], name: "users_email_index"))
 
     drop(table(:users))
   end

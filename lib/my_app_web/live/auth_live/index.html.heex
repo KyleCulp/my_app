@@ -17,35 +17,6 @@
         form={@form}
         live_action={@live_action}
       />
-
-      <div class="flex items-center">
-        <div class="w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
-        <div class="px-5 w-auto text-center text-gray-500 dark:text-gray-400 whitespace-nowrap">
-          or <%= if @live_action == :register, do: "register", else: "log in" %> with
-        </div>
-        <div class="w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
-      </div>
-
-      <div class="container mx-auto p-2 grid grid-cols-2 gap-2">
-        <a class="oauth-item" href="#">
-          <i class="bi bi-google mr-2"></i> Google
-        </a>
-        <a class="oauth-item" href="#">
-          <i class="bi bi-apple mr-2"></i> Apple
-        </a>
-        <a class="oauth-item" href="#">
-          <i class="bi bi-github mr-2"></i> Github
-        </a>
-        <a class="oauth-item" href="#">
-          <i class="bi bi-microsoft mr-2"></i> Microsoft
-        </a>
-        <a class="oauth-item" href="#">
-          <i class="bi bi-discord mr-2"></i> Discord
-        </a>
-        <a class="oauth-item" href="#">
-          <i class="bi bi-steam mr-2"></i> Steam
-        </a>
-      </div>
       <p class="text-sm font-light text-gray-500 dark:text-gray-400">
         <%= if @live_action==:register do %>
           Already have an account?
@@ -66,6 +37,34 @@
           </a>
         <% end %>
       </p>
+      <div class="flex items-center">
+        <div class="w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
+        <div class="px-5 w-auto text-center text-gray-500 dark:text-gray-400 whitespace-nowrap">
+          or log in / register with
+        </div>
+        <div class="w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
+      </div>
+
+      <div class="container mx-auto p-2 grid grid-cols-2 gap-2">
+        <a class="oauth-item" href="/auth/user/google">
+          <i class="bi bi-google mr-2"></i> Google
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-apple mr-2"></i> Apple
+        </a>
+        <a class="oauth-item" href="/auth/user/github">
+          <i class="bi bi-github mr-2"></i> Github
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-microsoft mr-2"></i> Microsoft
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-discord mr-2"></i> Discord
+        </a>
+        <a class="oauth-item" href="#">
+          <i class="bi bi-steam mr-2"></i> Steam
+        </a>
+      </div>
     </div>
   </div>
 </section>

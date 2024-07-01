@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :my_app, MyApp.Repo,
-  username: "myuser",
-  password: "mypassword",
+  username: "postgres",
+  password: "masterpassword",
   hostname: "postgres-primary",
   database: "my_app_dev",
   port: 5432,

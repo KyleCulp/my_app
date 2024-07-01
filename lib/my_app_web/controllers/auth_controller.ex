@@ -12,10 +12,13 @@ defmodule MyAppWeb.AuthController do
     |> redirect(to: return_to)
   end
 
-  def failure(conn, _activity, _reason) do
+  def failure(conn, activity, reason) do
+    IO.inspect(activity)
+    IO.inspect(reason)
+
     conn
     |> put_flash(:error, "Incorrect email or password")
-    |> redirect(to: ~p"/sign-in")
+    |> redirect(to: ~p"/login")
   end
 
   def sign_out(conn, _params) do
@@ -25,6 +28,27 @@ defmodule MyAppWeb.AuthController do
     |> clear_session()
     |> redirect(to: return_to)
   end
+
+  # def action(conn, params) do
+  #   args = [conn, conn.params, params]
+  #   apply(__MODULE__, action_name(conn), args)
+  # end
+
+  # def user_google_request(conn, _params) do
+  #   # Handle the Google request logic here
+  #   # Example:
+  #   conn
+  #   |> put_flash(:info, "Google request initiated")
+  #   |> redirect(to: "/")
+  # end
+
+  # def user_google_callback(conn, _params) do
+  #   # Handle the Google callback logic here
+  #   # Example:
+  #   conn
+  #   |> put_flash(:info, "Google callback received")
+  #   |> redirect(to: "/")
+  # end
 end
 
 defmodule MyAppWeb.AuthHTML do

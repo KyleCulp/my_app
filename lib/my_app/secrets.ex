@@ -1,6 +1,16 @@
 defmodule MyApp.Secrets do
   use AshAuthentication.Secret
 
+  def secret_for([:authentication, :tokens, :signing_secret], MyApp.Accounts.User, _) do
+    case Application.fetch_env(:my_app, MyAppWeb.Endpoint) do
+      {:ok, endpoint_config} ->
+        Keyword.fetch(endpoint_config, :secret_key_base)
+
+      :error ->
+        :error
+    end
+  end
+
   def secret_for([:authentication, :strategies, :github, :client_id], MyApp.Accounts.User, _),
     do: get_config(:github, :client_id)
 
@@ -18,6 +28,12 @@ defmodule MyApp.Secrets do
 
   def secret_for([:authentication, :strategies, :google, :client_secret], MyApp.Accounts.User, _),
     do: get_config(:google, :client_secret)
+
+  defp get_config(key) do
+    :my_app
+    |> Application.get_env([])
+    |> Keyword.fetch(key)
+  end
 
   defp get_config(strategy, key) do
     :my_app

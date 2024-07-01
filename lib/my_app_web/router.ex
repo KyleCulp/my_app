@@ -1,4 +1,6 @@
 defmodule MyAppWeb.Router do
+  alias AshJsonApi.Controllers.Index
+  alias MyAppWeb.TodoListLive
   use MyAppWeb, :router
   use AshAuthentication.Phoenix.Router
 
@@ -52,12 +54,18 @@ defmodule MyAppWeb.Router do
     # ash_authentication_live_session :authentication_required,
     #   on_mount: {MyAppWeb.LiveUserAuth, :live_user_required} do
     ash_authentication_live_session :authenticated do
-      live "/todo_lists", TodoListLive.Index, :index
-      live "/todo_lists/new", TodoListLive.Index, :new
-      live "/todo_lists/:id/edit", TodoListLive.Index, :edit
+      scope "/todo_lists", TodoListLive do
+        live "/", Index, :index
+        live "/new", Index, :new
+        live "/:id/edit", Index, :edit
+        live "/:id", Show, :show
+        live "/:id/show/edit", Show, :edit
+      end
 
-      live "/todo_lists/:id", TodoListLive.Show, :show
-      live "/todo_lists/:id/show/edit", TodoListLive.Show, :edit
+      scope "/profile", ProfileLive do
+        live "/", Index, :index
+        live "/settings", Settings, :index
+      end
     end
   end
 

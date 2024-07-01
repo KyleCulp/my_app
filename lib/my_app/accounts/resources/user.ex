@@ -12,7 +12,17 @@ defmodule MyApp.Accounts.User do
   attributes do
     uuid_primary_key :id
     attribute :email, :ci_string, allow_nil?: false, public?: true
-    attribute :hashed_password, :string, allow_nil?: false, sensitive?: true
+    attribute :hashed_password, :string, allow_nil?: true, sensitive?: true
+
+    attribute :github, MyApp.Accounts.Github do
+      public? true
+      # constraints [load: [:full_name]]
+    end
+
+    attribute :google, MyApp.Accounts.Google do
+      public? true
+      # constraints [load: [:full_name]]
+    end
 
     create_timestamp :created_at
     update_timestamp :updated_at
@@ -20,10 +30,13 @@ defmodule MyApp.Accounts.User do
 
   relationships do
     has_many :todo_lists, MyApp.Todos.TodoList
+    # has_one :google_identity, MyApp.Accounts.Identities.Google, destination_attribute: :user_id
   end
 
   identities do
     identity :unique_email, [:email]
+    identity :email, [:email]
+    # identity :google, google: [:email]
   end
 
   authentication do
@@ -40,12 +53,14 @@ defmodule MyApp.Accounts.User do
       end
 
       github do
+        identity_resource MyApp.Accounts.Identities.Github
         client_id MyApp.Secrets
         redirect_uri MyApp.Secrets
         client_secret MyApp.Secrets
       end
 
       google do
+        identity_resource MyApp.Accounts.Identities.Google
         client_id MyApp.Secrets
         redirect_uri MyApp.Secrets
         client_secret MyApp.Secrets
@@ -55,16 +70,21 @@ defmodule MyApp.Accounts.User do
     tokens do
       enabled? true
       token_resource MyApp.Accounts.Token
-      signing_secret MyApp.Accounts.Secrets
-
-      # signing_secret fn _, _ ->
-      #   Application.fetch_env(:my_app, :token_signing_secret)
-      # end
+      signing_secret MyApp.Secrets
     end
   end
 
   actions do
     defaults [:read, :update, :destroy]
+
+    read :by_email do
+      argument :email, :ci_string do
+        allow_nil? false
+      end
+
+      get? true
+      filter expr(email == ^arg(:email))
+    end
 
     create :register_with_github do
       argument :user_info, :map, allow_nil?: false
@@ -72,15 +92,13 @@ defmodule MyApp.Accounts.User do
       upsert? true
       upsert_identity :email
 
-      # Required if you have token generation enabled.
+      # change MyApp.Accounts.Changes.SaveOAuthInfo
       change AshAuthentication.GenerateTokenChange
-
-      # Required if you have the `identity_resource` configuration enabled.
       change AshAuthentication.Strategy.OAuth2.IdentityChange
 
       change fn changeset, _ ->
         user_info = Ash.Changeset.get_argument(changeset, :user_info)
-
+        IO.inspect(user_info)
         Ash.Changeset.change_attributes(changeset, Map.take(user_info, ["email"]))
       end
     end
@@ -99,17 +117,31 @@ defmodule MyApp.Accounts.User do
       upsert? true
       upsert_identity :email
 
+      change MyApp.Accounts.Changes.SaveOAuthInfo
       change AshAuthentication.GenerateTokenChange
-
-      # Required if you have the `identity_resource` configuration enabled.
       change AshAuthentication.Strategy.OAuth2.IdentityChange
 
       change fn changeset, _ ->
-        user_info = Ash.Changeset.get_argument(changeset, :user_info)
+        user_info =
+          Ash.Changeset.get_argument(changeset, :user_info)
 
-        Ash.Changeset.change_attributes(changeset, Map.take(user_info, ["email"]))
+        changeset
+        |> Ash.Changeset.change_attributes(Map.take(user_info, ["email"]))
       end
     end
+
+    read :sign_in_with_google do
+      argument :user_info, :map, allow_nil?: false
+      argument :oauth_tokens, :map, allow_nil?: false
+      prepare AshAuthentication.Strategy.OAuth2.SignInPreparation
+      # prepare MyApp.Accounts.Changes.StrategyInfo
+
+      filter expr(email == get_path(^arg(:user_info), [:email]))
+    end
+  end
+
+  calculations do
+    calculate :display_name, :string, MyApp.Accounts.Calculations.DisplayName
   end
 
   json_api do

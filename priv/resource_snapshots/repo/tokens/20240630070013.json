@@ -7,8 +7,8 @@
       "source": "updated_at",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "fragment(\"(now() AT TIME ZONE 'utc')\")",
@@ -17,8 +17,8 @@
       "source": "created_at",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -27,8 +27,8 @@
       "source": "extra_data",
       "references": null,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -37,8 +37,8 @@
       "source": "purpose",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -47,8 +47,8 @@
       "source": "expires_at",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -57,8 +57,8 @@
       "source": "subject",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -67,23 +67,23 @@
       "source": "jti",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "primary_key?": true,
+      "generated?": false
     }
   ],
   "table": "tokens",
-  "hash": "F2C3059AF4DA0CB347BD351BAF9E20FA760E0345F5992445AD327D75079D9DEC",
+  "hash": "14472136BF7626EE6CD47CBC0CE7E53F43066B5D3838BAA92C53BC77D8B4A5B4",
   "repo": "Elixir.MyApp.Repo",
-  "schema": null,
   "identities": [],
-  "base_filter": null,
+  "schema": null,
+  "check_constraints": [],
+  "custom_indexes": [],
   "multitenancy": {
     "global": null,
     "strategy": null,
     "attribute": null
   },
-  "check_constraints": [],
-  "custom_indexes": [],
+  "base_filter": null,
   "custom_statements": [],
   "has_create_action": true
 }
