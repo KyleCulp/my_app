@@ -12,10 +12,14 @@
     </script>
   </head>
 
-  <body class="bg-white h-screen">
+  <body class="bg-gray-50 dark:bg-gray-800">
     <.layout_header conn={@conn} current_user={@current_user} />
-    <div class="pt-16 h-full">
-      <%= @inner_content %>
+    <div class="flex overflow-hidden pt-16 bg-gray-50 dark:bg-gray-900">
+    <.layout_sidebar conn={@conn} current_user={@current_user} />
+      <div id="main-content" class="overflow-y-auto relative w-full h-full bg-gray-50 lg:ml-64 dark:bg-gray-900">
+        <%= @inner_content %>
+        <.layout_footer conn={@conn} current_user={@current_user} />
+      </div>
     </div>
   </body>
 </html>

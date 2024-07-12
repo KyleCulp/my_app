@@ -1,67 +1,49 @@
-defmodule MyApp.Todos.TodoList do
+defmodule MyApp.Kanbans.KanbanCollaborator do
   use Ash.Resource,
-    domain: MyApp.Todos,
+    domain: MyApp.Kanbans,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshJsonApi.Resource, AshGraphql.Resource],
     notifiers: [Ash.Notifier.PubSub]
 
+  resource do
+    description "The collaborators that have some form of access to a Kanban."
+    plural_name :kanban_collaborators
+  end
+
   postgres do
-    table "todo_lists"
+    table "kanban_collaborators"
     repo MyApp.Repo
   end
 
   attributes do
     uuid_primary_key :id
 
-    attribute :title, :string do
+    attribute :role, :atom do
+      constraints one_of: [:admin, :write, :read]
       allow_nil? false
-      public? true
+      always_select? true
     end
 
-    attribute :description, :string do
-      allow_nil? true
-      public? true
-    end
-
-    create_timestamp :created_at, public?: true
-    update_timestamp :updated_at, public?: true
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 
   relationships do
-    belongs_to :user, MyApp.Accounts.User do
-      writable? true
-      allow_nil? false
-    end
-
-    has_many :todo_items, MyApp.Todos.TodoItem, public?: true
+    belongs_to :user, MyApp.Accounts.User, allow_nil?: false
+    belongs_to :kanban, MyApp.Kanbans.Kanban, allow_nil?: false
   end
 
   actions do
     defaults [:read, :destroy]
 
-    read :users_lists do
-      argument :user_id, :uuid
-      filter expr(user_id == ^arg(:user_id))
-    end
-
     create :create do
       primary? true
-      accept [:title, :description]
       change relate_actor(:user)
     end
 
     update :update do
       primary? true
-      accept [:title, :description]
       change relate_actor(:user)
-    end
-
-    read :by_id do
-      argument :id, :uuid, allow_nil?: false
-      # Tells us we expect this action to return a single result
-      get? true
-      filter expr(id == ^arg(:id))
     end
   end
 
@@ -81,14 +63,6 @@ defmodule MyApp.Todos.TodoList do
     policy action_type(:destroy) do
       authorize_if relates_to_actor_via(:user)
     end
-  end
-
-  json_api do
-    type "todo_list"
-  end
-
-  graphql do
-    type :todo_list
   end
 
   # pub_sub do

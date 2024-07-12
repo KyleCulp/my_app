@@ -1,13 +1,17 @@
-defmodule MyApp.Todos.TodoList do
+defmodule MyApp.Kanbans.Kanban do
   use Ash.Resource,
-    domain: MyApp.Todos,
+    domain: MyApp.Kanbans,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshJsonApi.Resource, AshGraphql.Resource],
     notifiers: [Ash.Notifier.PubSub]
 
+  resource do
+    description "The Kanban object which owns all items related to a Kanban instance."
+    plural_name :kanbans
+  end
+
   postgres do
-    table "todo_lists"
+    table "kanbans"
     repo MyApp.Repo
   end
 
@@ -16,16 +20,16 @@ defmodule MyApp.Todos.TodoList do
 
     attribute :title, :string do
       allow_nil? false
-      public? true
+      constraints max_length: 64, min_length: 3, trim?: true
     end
 
-    attribute :description, :string do
-      allow_nil? true
-      public? true
-    end
+    attribute :description, :string
+    attribute :readme, :string
+    attribute :visibility, :atom, constraints: [one_of: [:public, :collaborators]]
+    attribute :archived, :boolean
 
-    create_timestamp :created_at, public?: true
-    update_timestamp :updated_at, public?: true
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 
   relationships do
@@ -34,34 +38,25 @@ defmodule MyApp.Todos.TodoList do
       allow_nil? false
     end
 
-    has_many :todo_items, MyApp.Todos.TodoItem, public?: true
+    has_many :kanban_collaborators, MyApp.Kanbans.KanbanCollaborator
+    has_many :kanban_items, MyApp.Kanbans.KanbanItem
+    has_many :kanban_views, MyApp.Kanbans.KanbanView
+    has_many :kanban_statuses, MyApp.Kanbans.KanbanStatus
+    has_many :kanban_priorities, MyApp.Kanbans.KanbanPriority
+    has_many :kanban_size, MyApp.Kanbans.KanbanSize
   end
 
   actions do
     defaults [:read, :destroy]
 
-    read :users_lists do
-      argument :user_id, :uuid
-      filter expr(user_id == ^arg(:user_id))
-    end
-
     create :create do
       primary? true
-      accept [:title, :description]
       change relate_actor(:user)
     end
 
     update :update do
       primary? true
-      accept [:title, :description]
       change relate_actor(:user)
-    end
-
-    read :by_id do
-      argument :id, :uuid, allow_nil?: false
-      # Tells us we expect this action to return a single result
-      get? true
-      filter expr(id == ^arg(:id))
     end
   end
 
@@ -81,14 +76,6 @@ defmodule MyApp.Todos.TodoList do
     policy action_type(:destroy) do
       authorize_if relates_to_actor_via(:user)
     end
-  end
-
-  json_api do
-    type "todo_list"
-  end
-
-  graphql do
-    type :todo_list
   end
 
   # pub_sub do

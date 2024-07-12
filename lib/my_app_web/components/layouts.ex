@@ -13,4 +13,6 @@ defmodule MyAppWeb.Layouts do
   embed_templates "layouts/*"
 
   def layout_header(assigns)
+  def layout_sidebar(assigns)
+  def layout_footer(assigns)
 end

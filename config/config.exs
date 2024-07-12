@@ -13,6 +13,7 @@ config :my_app,
 
 config :my_app, ash_domains: [MyApp.Accounts, MyApp.Todos]
 
+# AshJsonAPI Types
 config :mime, :types, %{
   "application/vnd.api+json" => ["json"]
 }
@@ -20,6 +21,9 @@ config :mime, :types, %{
 config :mime, :extensions, %{
   "json" => "application/vnd.api+json"
 }
+
+config :ash_graphql, :json_type, :json
+config :ash_graphql, :policies, show_policy_breakdowns?: true
 
 # Configures the endpoint
 config :my_app, MyAppWeb.Endpoint,

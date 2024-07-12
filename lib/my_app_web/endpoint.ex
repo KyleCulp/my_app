@@ -11,6 +11,13 @@ defmodule MyAppWeb.Endpoint do
     same_site: "Lax"
   ]
 
+  plug MyAppWeb.Plugs.CsrfTokenHeader
+
+  plug Corsica,
+    origins: ["http://localhost", "http://localhost:5173"],
+    allow_headers: ["accept", "content-type", "authorization", "x-csrf-token"],
+    allow_credentials: true
+
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
@@ -49,5 +56,6 @@ defmodule MyAppWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
   plug MyAppWeb.Router
 end

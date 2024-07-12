@@ -2,7 +2,9 @@ defmodule MyApp.Todos.TodoItem do
   use Ash.Resource,
     domain: MyApp.Todos,
     data_layer: AshPostgres.DataLayer,
-    authorizers: [Ash.Policy.Authorizer]
+    authorizers: [Ash.Policy.Authorizer],
+    extensions: [AshJsonApi.Resource, AshGraphql.Resource],
+    notifiers: [Ash.Notifier.PubSub]
 
   postgres do
     table "todo_items"
@@ -14,10 +16,12 @@ defmodule MyApp.Todos.TodoItem do
 
     attribute :text, :string do
       allow_nil? false
+      public? true
     end
 
     attribute :completed, :boolean do
       default false
+      public? true
     end
 
     create_timestamp :created_at
@@ -28,6 +32,7 @@ defmodule MyApp.Todos.TodoItem do
     belongs_to :todo_list, MyApp.Todos.TodoList do
       writable? true
       allow_nil? false
+      public? true
     end
   end
 
@@ -45,6 +50,7 @@ defmodule MyApp.Todos.TodoItem do
     end
 
     update :update do
+      primary? true
       accept [:text, :completed]
     end
 
@@ -73,5 +79,13 @@ defmodule MyApp.Todos.TodoItem do
     policy action_type(:destroy) do
       authorize_if always()
     end
+  end
+
+  json_api do
+    type "todo_item"
+  end
+
+  graphql do
+    type :todo_item
   end
 end

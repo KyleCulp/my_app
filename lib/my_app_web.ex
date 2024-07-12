@@ -85,7 +85,8 @@ defmodule MyAppWeb do
       import Phoenix.HTML
 
       # Core UI components and translation
-      import MyAppWeb.CoreComponents
+      # import MyAppWeb.CoreComponents
+      import MyAppWeb.FlowbiteComponents
       import MyAppWeb.Gettext
 
       # Shortcut for generating JS commands

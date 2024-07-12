@@ -11,9 +11,15 @@
 
 #   attributes do
 #     uuid_primary_key :id
-#     attribute :profile_picture, :string, public?: true
-#     attribute :name, :string, public?: false
-#     attribute :username, :string
+
+#     attribute :profile_picture, :atom,
+#       constraints: [one_of: [:uploaded, :google, :github, :microsoft, :discord, :apple, :steam]]
+
+#     attribute :profile_picture_uuid, :uuid
+#     attribute :first_name, :string, public?: false
+#     attribute :last_name, :string, public?: false
+#     attribute :country, :string, public?: true
+#     attribute name, type
 #     attribute :dob, :date
 #     attribute :gender, :atom, constraints: [one_of: [:male, :female, :other]]
 #     attribute :public_profile, :boolean, default: false

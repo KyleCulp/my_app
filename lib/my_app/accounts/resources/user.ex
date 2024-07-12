@@ -2,30 +2,38 @@ defmodule MyApp.Accounts.User do
   use Ash.Resource,
     domain: MyApp.Accounts,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshAuthentication, AshJsonApi.Resource]
+    extensions: [AshAuthentication, AshJsonApi.Resource, AshGraphql.Resource]
 
   postgres do
     table "users"
     repo MyApp.Repo
   end
 
+  @type t :: %__MODULE__{
+          id: Ecto.UUID.t(),
+          email: String.t(),
+          hashed_password: String.t(),
+          github: MyApp.Accounts.Github.t(),
+          google: MyApp.Accounts.Google.t(),
+          created_at: DateTime.t(),
+          updated_at: DateTime.t()
+        }
+
   attributes do
     uuid_primary_key :id
     attribute :email, :ci_string, allow_nil?: false, public?: true
-    attribute :hashed_password, :string, allow_nil?: true, sensitive?: true
 
-    attribute :github, MyApp.Accounts.Github do
-      public? true
-      # constraints [load: [:full_name]]
+    attribute :hashed_password, :string do
+      allow_nil? true
+      sensitive? true
+      public? false
     end
 
-    attribute :google, MyApp.Accounts.Google do
-      public? true
-      # constraints [load: [:full_name]]
-    end
+    attribute :github, MyApp.Accounts.Github, public?: true
+    attribute :google, MyApp.Accounts.Google, public?: true
 
-    create_timestamp :created_at
-    update_timestamp :updated_at
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do
@@ -45,7 +53,7 @@ defmodule MyApp.Accounts.User do
         identity_field :email
         hashed_password_field :hashed_password
         sign_in_tokens_enabled? true
-        confirmation_required? false
+        confirmation_required? true
 
         resettable do
           sender MyApp.Accounts.Senders.SendPasswordResetEmail
@@ -71,11 +79,17 @@ defmodule MyApp.Accounts.User do
       enabled? true
       token_resource MyApp.Accounts.Token
       signing_secret MyApp.Secrets
+      store_all_tokens? true
     end
   end
 
   actions do
     defaults [:read, :update, :destroy]
+
+    read :current_user do
+      get? true
+      manual MyApp.Accounts.Changes.CurrentUserRead
+    end
 
     read :by_email do
       argument :email, :ci_string do
@@ -146,16 +160,10 @@ defmodule MyApp.Accounts.User do
 
   json_api do
     type "user"
+  end
 
-    # routes do
-    #   # on the resource, the `base` applies to all routes
-    #   base("/users")
-
-    #   get(:read)
-    #   index :read
-    #   post(:destroy)
-    #   # ...
-    # end
+  graphql do
+    type :user
   end
 
   # You can customize this if you wish, but this is a safe default that
@@ -168,5 +176,14 @@ defmodule MyApp.Accounts.User do
   #   # policy always() do
   #   #   forbid_if always()
   #   # end
+
+  # policy action(:register_with_password) do
+  #   authorize_if always()
+  # end
+
+  # policy action_type(:read) do
+  #   authorize_if action(:sign_in_with_password)
+  #   authorize_if expr(id == ^actor(:id))
+  # end
   # end
 end

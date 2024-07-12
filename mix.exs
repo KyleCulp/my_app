@@ -32,6 +32,7 @@ defmodule MyApp.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # Phoenix
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
@@ -40,8 +41,9 @@ defmodule MyApp.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # TODO bump on release to {:phoenix_live_view, "~> 1.0.0"},
       {:phoenix_live_view, "~> 1.0.0-rc.6", override: true},
-      {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
+      {:floki, ">= 0.30.0", only: :test},
+      {:corsica, "~> 2.0"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
@@ -68,7 +70,8 @@ defmodule MyApp.MixProject do
       {:ash_authentication_phoenix, "~> 2.0"},
       {:ash_json_api, "~> 1.0"},
       {:open_api_spex, "~> 3.0"},
-      {:redoc_ui_plug, "~> 0.2"}
+      {:redoc_ui_plug, "~> 0.2"},
+      {:ash_graphql, "~> 1.2.0"}
     ]
   end
 

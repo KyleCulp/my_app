@@ -10,7 +10,8 @@
         "jakebecker.elixir-ls",
         "phoenixframework.phoenix",
         "pantajoe.vscode-elixir-credo",
-        "samuel-pordeus.elixir-test"
+        "samuel-pordeus.elixir-test",
+        "RoyalMist.vscode-eex-format"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -18,17 +19,19 @@
         "elixirLS.fetchDeps": true,
         "elixir.credo.configFile": "../.credo.exs",
         "files.associations": {
-          "*.heex": "phoenix-heex",
+          "*.heex": "phoenix-heex"
         },
-        "[elixir]": {
-          "editor.formatOnSave": true,
-          "editor.defaultFormatter": "JakeBecker.elixir-ls"
+        "emmet.includeLanguages": {
+          "phoenix-heex": "html"
         },
         "[phoenix-heex]": {
           "editor.formatOnSave": true,
-          "editor.defaultFormatter": "JakeBecker.elixir-ls"
+          "editor.defaultFormatter": "RoyalMist.vscode-eex-format"
         },
-      },
+        "tailwindCSS.includeLanguages": {
+          "phoenix-heex": "html"
+        }
+      }
     }
-  },
+  }
 }
