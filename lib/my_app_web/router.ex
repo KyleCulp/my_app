@@ -26,23 +26,23 @@ defmodule MyAppWeb.Router do
     # plug MyAppWeb.Plugs.GetActorFromToken
   end
 
-  pipeline :graphql do
-    plug :api
-    plug AshGraphql.Plug
-  end
+  # pipeline :graphql do
+  #   plug :api
+  #   plug AshGraphql.Plug
+  # end
 
-  scope "/" do
-    pipe_through [:graphql]
+  # scope "/" do
+  #   pipe_through [:graphql]
 
-    forward "/gql",
-            Absinthe.Plug,
-            schema: Module.concat(["MyApp.GraphqlSchema"])
+  #   forward "/gql",
+  #           Absinthe.Plug,
+  #           schema: Module.concat(["MyApp.GraphqlSchema"])
 
-    forward "/playground",
-            Absinthe.Plug.GraphiQL,
-            schema: Module.concat(["MyApp.GraphqlSchema"]),
-            interface: :playground
-  end
+  #   forward "/playground",
+  #           Absinthe.Plug.GraphiQL,
+  #           schema: Module.concat(["MyApp.GraphqlSchema"]),
+  #           interface: :playground
+  # end
 
   # # Auth Routes
   # scope "/", MyAppWeb do
@@ -89,22 +89,30 @@ defmodule MyAppWeb.Router do
   #   end
   # end
 
+  scope "/", MyAppWeb do
+    pipe_through :api
+    # sign_in_route
+    sign_out_route AuthJsonController
+    auth_routes_for MyApp.Accounts.User, to: AuthJsonController
+    # reset_route
+  end
+
   # API Routes
   scope "/" do
     pipe_through(:api)
-    auth_routes_for MyApp.Accounts.User, to: MyAppWeb.AuthController
+    # auth_routes_for MyApp.Accounts.User, to: MyAppWeb.AuthController
 
     forward "/api/swagger",
             OpenApiSpex.Plug.SwaggerUI,
-            path: "/api/open_api",
+            path: "/open_api",
             title: "Myapp's JSON-API - Swagger UI",
             default_model_expand_depth: 4
 
     forward "/api/redoc",
             Redoc.Plug.RedocUI,
-            spec_url: "/api/open_api"
+            spec_url: "/open_api"
 
-    forward "/api", MyAppWeb.JsonApiRouter
+    forward "/", MyAppWeb.JsonApiRouter
   end
 
   def extract_user_id(jwt) do

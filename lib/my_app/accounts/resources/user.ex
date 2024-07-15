@@ -1,4 +1,5 @@
 defmodule MyApp.Accounts.User do
+  @moduledoc false
   use Ash.Resource,
     domain: MyApp.Accounts,
     data_layer: AshPostgres.DataLayer,
@@ -76,10 +77,11 @@ defmodule MyApp.Accounts.User do
     end
 
     tokens do
-      enabled? true
       token_resource MyApp.Accounts.Token
       signing_secret MyApp.Secrets
+      enabled? true
       store_all_tokens? true
+      require_token_presence_for_authentication? true
     end
   end
 

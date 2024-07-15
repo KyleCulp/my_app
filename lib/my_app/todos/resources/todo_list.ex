@@ -17,6 +17,7 @@ defmodule MyApp.Todos.TodoList do
     attribute :title, :string do
       allow_nil? false
       public? true
+      constraints max_length: 64, min_length: 1, trim?: true
     end
 
     attribute :description, :string do
