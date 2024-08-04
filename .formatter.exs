@@ -14,6 +14,7 @@
     :ash_postgres,
     :ash_authentication,
     :ash_authentication_phoenix,
-    :ash_phoenix
+    :ash_phoenix,
+    :open_api_spex
   ]
 ]

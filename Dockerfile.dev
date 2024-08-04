@@ -27,7 +27,7 @@ COPY mix.exs mix.lock ./
 COPY . .
 
 # Install Node.js and npm (optional, if you are using assets with Phoenix)
-RUN apt-get install -y nodejs npm
+RUN apt-get install -y nodejs
 
 # Install Node.js dependencies (optional, if you are using assets with Phoenix)
 # RUN cd assets && npm install

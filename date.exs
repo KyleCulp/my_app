@@ -1,0 +1,6 @@
+now = DateTime.now!()
+next = DateTime.add(15, :minute)
+diff = DateTime.diff(now, next)
+IO.inspect(now)
+IO.inspect(next)
+IO.inspect(diff)

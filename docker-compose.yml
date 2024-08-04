@@ -14,6 +14,15 @@ services:
     networks:
       - dev-network
 
+  redis:
+    image: 'bitnami/redis:latest'
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - dev-network
+
   postgres-primary:
     image: bitnami/postgresql:latest
     container_name: postgres-primary

@@ -53,7 +53,7 @@ defmodule MyApp.Accounts.User do
       password :password do
         identity_field :email
         hashed_password_field :hashed_password
-        sign_in_tokens_enabled? true
+        sign_in_tokens_enabled? false
         confirmation_required? true
 
         resettable do
@@ -80,8 +80,8 @@ defmodule MyApp.Accounts.User do
       token_resource MyApp.Accounts.Token
       signing_secret MyApp.Secrets
       enabled? true
-      store_all_tokens? true
-      require_token_presence_for_authentication? true
+      store_all_tokens? false
+      require_token_presence_for_authentication? false
     end
   end
 

@@ -25,6 +25,10 @@ config :mime, :extensions, %{
 config :ash_graphql, :json_type, :json
 config :ash_graphql, :policies, show_policy_breakdowns?: true
 
+config :my_app, MyApp.Redis,
+  host: "redis",
+  port: 6379
+
 # Configures the endpoint
 config :my_app, MyAppWeb.Endpoint,
   url: [host: "localhost"],

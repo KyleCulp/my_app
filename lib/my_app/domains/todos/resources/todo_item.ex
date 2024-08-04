@@ -40,14 +40,21 @@ defmodule MyApp.Todos.TodoItem do
     defaults [:read, :destroy]
 
     create :create do
+      primary? true
       accept [:text]
 
-      argument :todo_list_id, :uuid do
+      argument :todo_list, :map do
         allow_nil? false
       end
 
-      change manage_relationship(:todo_list_id, :todo_list, type: :append)
+      change manage_relationship(:todo_list, type: :append)
     end
+
+    # create :create_direct do
+    #   argument :todo_list, :map, allow_nil?: false
+    #   accept [:text]
+    #   change manage_relationship(:todo_list, type: :append)
+    # end
 
     update :update do
       primary? true

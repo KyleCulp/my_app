@@ -14,6 +14,9 @@ config :my_app, MyApp.Repo,
 config :my_app, :token_signing_secret, "some_super_secret_random_value"
 config :ash_authentication, debug_authentication_failures?: true
 
+# Disable open_api cache in development
+config :open_api_spex, :cache_adapter, OpenApiSpex.Plug.NoneCache
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -34,6 +37,7 @@ config :my_app, MyAppWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "tWXsOHC1yXnm2GTKqr2FMInvJmwJat5wzMYkk1aXzirMuCIXAbu4UwOAYurtFBX7",
+  salt: "5HDfH+YT3uxLueFGTsk0Tg==",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:my_app, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:my_app, ~w(--watch)]}

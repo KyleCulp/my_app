@@ -33,6 +33,7 @@ defmodule MyApp.Todos.TodoList do
     belongs_to :user, MyApp.Accounts.User do
       writable? true
       allow_nil? false
+      public? true
     end
 
     has_many :todo_items, MyApp.Todos.TodoItem, public?: true
@@ -40,6 +41,20 @@ defmodule MyApp.Todos.TodoList do
 
   actions do
     defaults [:read, :destroy]
+
+    read :get do
+      primary? true
+      get? true
+      argument :id, :uuid
+      filter expr(id == ^arg(:id))
+      # prepare build(load: [:todo_items, :user])
+      prepare fn query, _ ->
+        query
+        |> Ash.Query.load(:todo_items)
+        |> Ash.Query.load(:user)
+        |> IO.inspect()
+      end
+    end
 
     read :users_lists do
       argument :user_id, :uuid
@@ -49,13 +64,19 @@ defmodule MyApp.Todos.TodoList do
     create :create do
       primary? true
       accept [:title, :description]
+      argument :todo_items, {:array, :map}
+      upsert? true
+
       change relate_actor(:user)
+      # change manage_relationship(:todo_items, type: :create)
     end
 
     update :update do
       primary? true
+      argument :todo_items, :map, allow_nil?: true
       accept [:title, :description]
       change relate_actor(:user)
+      # change manage_relationship(:todo_items, type: :update)
     end
 
     read :by_id do
@@ -67,8 +88,20 @@ defmodule MyApp.Todos.TodoList do
   end
 
   policies do
+    # policy action_type(:read) do
+    #   authorize_if(relates_to_actor_via(:user))
+    # end
+
     policy action(:read) do
-      authorize_if always()
+      authorize_if(always())
+    end
+
+    # policy action(:read) do
+    #   authorize_if(relates_to_actor_via(:user))
+    # end
+
+    policy action(:get) do
+      authorize_if(relates_to_actor_via(:user))
     end
 
     policy action(:create) do

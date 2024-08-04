@@ -11,12 +11,8 @@ defmodule MyAppWeb.Endpoint do
     same_site: "Lax"
   ]
 
-  plug MyAppWeb.Plugs.CsrfTokenHeader
-
-  plug Corsica,
-    origins: ["http://localhost", "http://localhost:5173"],
-    allow_headers: ["accept", "content-type", "authorization", "x-csrf-token"],
-    allow_credentials: true
+  # plug MyAppWeb.Plugs.CsrfTokenHeader
+  # plug Corsica, origins: "*"
 
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
@@ -40,6 +36,13 @@ defmodule MyAppWeb.Endpoint do
     plug Phoenix.CodeReloader
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :my_app
   end
+
+  plug Corsica,
+    origins: ["http://localhost", "http://localhost:3000"],
+    # origins: "*",
+    allow_headers: ["accept", "content-type", "authorization", "x-csrf-token"],
+    allow_credentials: true,
+    log: [rejected: :error, invalid: :warn, accepted: :debug]
 
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",

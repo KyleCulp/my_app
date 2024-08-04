@@ -14,22 +14,29 @@ defmodule MyApp.Todos do
 
   json_api do
     routes do
-      base_route "/api/todos/todo_list", TodoList do
+      base_route "/todos/todo_list", TodoList do
         # in the domain `base_route` acts like a scope
         index :read
         get(:read)
         post(:create)
         patch(:update)
+        delete(:destroy)
+        # related(:todo_items, :get)
+        # post_to_relationship(:todo_items)
+        # relationship(:user, :read)
+        # relationship(:todo_items, :read)
+
         # post(:register_with_password, route: "/register")
         # post(:sign_in_with_password, route: "/login")
       end
 
-      base_route "/api/todos/todo_item", TodoItem do
-        index :read
-        get(:read)
-        post(:create, relationship_arguments: [:todo_list])
-        patch(:update)
-      end
+      # base_route "/api/todos/todo_item", TodoItem do
+      #   # index :read
+      #   # get(:read)
+
+      #   # post(:create, relationship_arguments: [:todo_list])
+      #   # patch(:update)
+      # end
     end
   end
 

@@ -16,6 +16,7 @@ defmodule MyApp.Application do
       {Finch, name: MyApp.Finch},
       # Start a worker by calling: MyApp.Worker.start_link(arg)
       # {MyApp.Worker, arg},
+      MyApp.Session.Store,
       {AshAuthentication.Supervisor, otp_app: :my_app},
       # Start to serve requests, typically the last entry
       MyAppWeb.Endpoint

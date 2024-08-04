@@ -13,12 +13,10 @@ defmodule MyApp.Accounts do
 
   json_api do
     routes do
-      base_route "/api/accounts/user", MyApp.Accounts.User do
-        # in the domain `base_route` acts like a scope
+      base_route "/accounts/user", MyApp.Accounts.User do
         get(:read)
         index :read
-        post(:register_with_password, route: "/register")
-        # post(:sign_in_with_password, route: "/login")
+        get(:current_user, route: "/current_user")
       end
     end
   end

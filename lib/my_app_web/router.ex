@@ -1,4 +1,5 @@
 defmodule MyAppWeb.Router do
+  alias MyAppWeb.V1.RegistrationController
   # alias AshJsonApi.Controllers.Index
   # alias MyAppWeb.TodoListLive
   use MyAppWeb, :router
@@ -26,6 +27,15 @@ defmodule MyAppWeb.Router do
     # plug MyAppWeb.Plugs.GetActorFromToken
   end
 
+  pipeline :api_v1 do
+    plug :accepts, ["json"]
+  end
+
+  pipeline :api_v1_authorized do
+    plug :accepts, ["json"]
+    plug MyAppWeb.V1.Plugs.Session
+  end
+
   # pipeline :graphql do
   #   plug :api
   #   plug AshGraphql.Plug
@@ -44,76 +54,62 @@ defmodule MyAppWeb.Router do
   #           interface: :playground
   # end
 
-  # # Auth Routes
-  # scope "/", MyAppWeb do
-  #   pipe_through :auth_live
+  scope "/api/v1/", MyAppWeb.V1 do
+    pipe_through :api_v1
 
-  #   auth_routes_for MyApp.Accounts.User, to: AuthController
-  #   # sign_in_route(register_path: "/register", reset_path: "/reset")
-  #   sign_out_route AuthController
-  #   reset_route []
-  #   # sign_in_route(on_mount: [{MyAppWeb.LiveUserAuth, :live_no_user}])
+    resources "/register", RegistrationController,
+      singleton: true,
+      only: [:create]
 
-  #   ash_authentication_live_session :maybe_authenticated,
-  #     on_mount: {MyAppWeb.LiveUserAuth, :live_no_user} do
-  #     live "/login", AuthLive.Index, :login
-  #     live "/register", AuthLive.Index, :register
-  #   end
-  # end
+    resources "/session", SessionController,
+      singleton: true,
+      only: [:show, :create, :delete]
 
-  # Deadview Routes
-  # scope "/", MyAppWeb do
-  #   pipe_through :browser
-
-  #   get "/", PageController, :home
-  # end
-
-  # Live Routes
-  # scope "/", MyAppWeb do
-  #   pipe_through [:browser]
-  #   # ash_authentication_live_session :authentication_required,
-  #   #   on_mount: {MyAppWeb.LiveUserAuth, :live_user_required} do
-  #   ash_authentication_live_session :authenticated do
-  #     scope "/todo_lists", TodoListLive do
-  #       live "/", Index, :index
-  #       live "/new", Index, :new
-  #       live "/:id/edit", Index, :edit
-  #       live "/:id", Show, :show
-  #       live "/:id/show/edit", Show, :edit
-  #     end
-
-  #     scope "/profile", ProfileLive do
-  #       live "/", Index, :index
-  #       live "/settings", Settings, :index
-  #     end
-  #   end
-  # end
-
-  scope "/", MyAppWeb do
-    pipe_through :api
-    # sign_in_route
-    sign_out_route AuthJsonController
-    auth_routes_for MyApp.Accounts.User, to: AuthJsonController
-    # reset_route
+    post "/session/renew", SessionController, :renew
   end
 
-  # API Routes
-  scope "/" do
-    pipe_through(:api)
-    # auth_routes_for MyApp.Accounts.User, to: MyAppWeb.AuthController
+  scope "/api/v1" do
+    pipe_through :api_v1_authorized
+    # get "/openapi", OpenApiSpex.Plug.RenderSpec, []
 
-    forward "/api/swagger",
+    forward "/swagger",
             OpenApiSpex.Plug.SwaggerUI,
-            path: "/open_api",
+            path: "/api/v1/open_api",
             title: "Myapp's JSON-API - Swagger UI",
             default_model_expand_depth: 4
 
-    forward "/api/redoc",
+    forward "/redoc",
             Redoc.Plug.RedocUI,
-            spec_url: "/open_api"
+            spec_url: "/api/v1/open_api"
 
-    forward "/", MyAppWeb.JsonApiRouter
+    forward "/", MyAppWeb.V1.JsonAPIRouter
   end
+
+  # scope "/", MyAppWeb do
+  #   pipe_through :api
+  #   # sign_in_route
+  #   sign_out_route AuthJsonController
+  #   auth_routes_for MyApp.Accounts.User, to: AuthJsonController
+  #   # reset_route
+  # end
+
+  # API Routes
+  # scope "/" do
+  #   pipe_through(:api)
+  #   # auth_routes_for MyApp.Accounts.User, to: MyAppWeb.AuthController
+
+  #   forward "/api/swagger",
+  #           OpenApiSpex.Plug.SwaggerUI,
+  #           path: "/open_api",
+  #           title: "Myapp's JSON-API - Swagger UI",
+  #           default_model_expand_depth: 4
+
+  #   forward "/api/redoc",
+  #           Redoc.Plug.RedocUI,
+  #           spec_url: "/open_api"
+
+  #   forward "/", MyAppWeb.JsonApiRouter
+  # end
 
   def extract_user_id(jwt) do
     case jwt["sub"] do

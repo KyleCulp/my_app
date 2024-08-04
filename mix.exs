@@ -71,7 +71,8 @@ defmodule MyApp.MixProject do
       {:ash_json_api, "~> 1.0"},
       {:open_api_spex, "~> 3.0"},
       {:redoc_ui_plug, "~> 0.2"},
-      {:ash_graphql, "~> 1.2.0"}
+      {:ash_graphql, "~> 1.2.0"},
+      {:redix, "~> 1.0"}
     ]
   end
 
